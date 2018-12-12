@@ -19,11 +19,15 @@ import java.sql.Connection;
 
 /**
  * Creates an {@link SqlSession} out of a connection or a DataSource
- * 
+ *
+ * 获取Session接口
  * @author Clinton Begin
  */
 public interface SqlSessionFactory {
-
+  /**
+   * 打开一个新对话
+   * @return
+   */
   SqlSession openSession();
 
   SqlSession openSession(boolean autoCommit);
@@ -35,6 +39,10 @@ public interface SqlSessionFactory {
   SqlSession openSession(ExecutorType execType, TransactionIsolationLevel level);
   SqlSession openSession(ExecutorType execType, Connection connection);
 
+  /**
+   * 获取配置文件
+   * @return
+   */
   Configuration getConfiguration();
 
 }

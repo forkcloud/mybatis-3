@@ -52,10 +52,20 @@ public class DefaultSqlSession implements SqlSession {
   private final Executor executor;
 
   private final boolean autoCommit;
+  /**
+   * 这个设置脏数据
+   */
   private boolean dirty;
   private List<Cursor<?>> cursorList;
 
+  /**
+   * 默认的SqlSession会话
+   * @param configuration
+   * @param executor
+   * @param autoCommit
+   */
   public DefaultSqlSession(Configuration configuration, Executor executor, boolean autoCommit) {
+    //设置一些参数
     this.configuration = configuration;
     this.executor = executor;
     this.dirty = false;
@@ -68,13 +78,18 @@ public class DefaultSqlSession implements SqlSession {
 
   @Override
   public <T> T selectOne(String statement) {
+    /**
+     * 查询一个
+     */
     return this.<T>selectOne(statement, null);
   }
 
   @Override
   public <T> T selectOne(String statement, Object parameter) {
     // Popular vote was to return null on 0 results and throw exception on too many.
+    //查询list
     List<T> list = this.<T>selectList(statement, parameter);
+
     if (list.size() == 1) {
       return list.get(0);
     } else if (list.size() > 1) {

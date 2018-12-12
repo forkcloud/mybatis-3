@@ -24,6 +24,7 @@ import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.BatchResult;
 
 /**
+ * 默认的SqlSession会话
  * The primary Java interface for working with MyBatis.
  * Through this interface you can execute commands, get mappers and manage transactions.
  *
@@ -32,6 +33,7 @@ import org.apache.ibatis.executor.BatchResult;
 public interface SqlSession extends Closeable {
 
   /**
+   * 查询一行，根据sql
    * Retrieve a single row mapped from the statement key
    * @param <T> the returned object type
    * @param statement

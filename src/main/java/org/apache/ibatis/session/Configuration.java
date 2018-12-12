@@ -94,10 +94,13 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * 主配置类
  * @author Clinton Begin
  */
 public class Configuration {
-
+  /**
+   * 环境相关
+   */
   protected Environment environment;
 
   protected boolean safeRowBoundsEnabled;
