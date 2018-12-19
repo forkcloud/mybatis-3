@@ -23,11 +23,27 @@ import org.apache.ibatis.transaction.TransactionFactory;
  * @author Clinton Begin
  */
 public final class Environment {
+  /**
+   * 环境id
+   */
   private final String id;
+  /**
+   * 事务工厂
+   */
   private final TransactionFactory transactionFactory;
+  /**
+   * sql 数据源
+   */
   private final DataSource dataSource;
 
+  /**
+   * 创建环境
+   * @param id
+   * @param transactionFactory
+   * @param dataSource
+   */
   public Environment(String id, TransactionFactory transactionFactory, DataSource dataSource) {
+    //以下就是一堆判断和赋值
     if (id == null) {
       throw new IllegalArgumentException("Parameter 'id' must not be null");
     }
@@ -42,6 +58,9 @@ public final class Environment {
     this.dataSource = dataSource;
   }
 
+  /**
+   * 建造器模式
+   */
   public static class Builder {
       private String id;
       private TransactionFactory transactionFactory;

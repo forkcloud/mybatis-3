@@ -32,16 +32,23 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 
 /**
+ * 默认的SQLSessionFactory类
  * @author Clinton Begin
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
-
+  /**
+   * 配置类，设置为final 防止被修改
+   */
   private final Configuration configuration;
 
   public DefaultSqlSessionFactory(Configuration configuration) {
     this.configuration = configuration;
   }
 
+  /**
+   * 打开session方法
+   * @return
+   */
   @Override
   public SqlSession openSession() {
     return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, false);
@@ -88,17 +95,26 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
   }
 
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
+
     Transaction tx = null;
     try {
+      //1. 获取配置类
       final Environment environment = configuration.getEnvironment();
+      //2.获取事务工厂
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+      //3. 创建事务
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+      //4. 创建执行器
       final Executor executor = configuration.newExecutor(tx, execType);
+      //返回默认的sqlSession会话
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
+      //如果异常则关闭事务
       closeTransaction(tx); // may have fetched a connection so lets call close()
+      //抛出异常
       throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);
     } finally {
+      //重新设置错误上下文
       ErrorContext.instance().reset();
     }
   }
@@ -107,16 +123,23 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     try {
       boolean autoCommit;
       try {
+        //从连接中获取是否提交
         autoCommit = connection.getAutoCommit();
       } catch (SQLException e) {
+        //有些驱动或者数据库不支持获取属性，所以异常则设置为true
         // Failover to true, as most poor drivers
         // or databases won't support transactions
         autoCommit = true;
-      }      
+      }
+      //1.获取配置
       final Environment environment = configuration.getEnvironment();
+      //2.获取事务工厂
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+      //创建事务
       final Transaction tx = transactionFactory.newTransaction(connection);
+      //获取执行器
       final Executor executor = configuration.newExecutor(tx, execType);
+      //创建默认的sql会话
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
       throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);
@@ -125,13 +148,25 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     }
   }
 
+  /**
+   * 从环境中获取获取事务工厂
+   * @param environment
+   * @return
+   */
   private TransactionFactory getTransactionFactoryFromEnvironment(Environment environment) {
+    //如果没有配置
     if (environment == null || environment.getTransactionFactory() == null) {
+      //重新创建
       return new ManagedTransactionFactory();
     }
+    //从配置文件获取
     return environment.getTransactionFactory();
   }
 
+  /**
+   * 关闭事务控制器
+   * @param tx
+   */
   private void closeTransaction(Transaction tx) {
     if (tx != null) {
       try {
