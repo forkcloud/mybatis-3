@@ -29,11 +29,21 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * 基础构建器
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {
+  /**
+   * 配置类，声明final防止被修改
+   */
   protected final Configuration configuration;
+  /**
+   * 类型alias声明注册器
+   */
   protected final TypeAliasRegistry typeAliasRegistry;
+  /**
+   * 类型处理Handler
+   */
   protected final TypeHandlerRegistry typeHandlerRegistry;
 
   public BaseBuilder(Configuration configuration) {
@@ -45,7 +55,7 @@ public abstract class BaseBuilder {
   public Configuration getConfiguration() {
     return configuration;
   }
-
+  /*******以下为一些xml中需要的类型转换以及读取xml的时候的一些工具类*******/
   protected Pattern parseExpression(String regex, String defaultValue) {
     return Pattern.compile(regex == null ? defaultValue : regex);
   }
@@ -63,6 +73,11 @@ public abstract class BaseBuilder {
     return new HashSet<>(Arrays.asList(value.split(",")));
   }
 
+  /**
+   * 通过alias来转换Jdbc类型
+   * @param alias
+   * @return
+   */
   protected JdbcType resolveJdbcType(String alias) {
     if (alias == null) {
       return null;

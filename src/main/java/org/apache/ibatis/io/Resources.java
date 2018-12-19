@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 /**
- * A class to simplify access to resources through the classloader.
+ * 资源加载工具类
  *
  * @author Clinton Begin
  */
@@ -35,8 +35,7 @@ public class Resources {
   private static ClassLoaderWrapper classLoaderWrapper = new ClassLoaderWrapper();
 
   /**
-   * Charset to use when calling getResourceAsReader.
-   * null means use the system default.
+   * 字符编码，如果为空则为系统默认
    */
   private static Charset charset;
 
@@ -44,7 +43,7 @@ public class Resources {
   }
 
   /**
-   * Returns the default classloader (may be null).
+   * 返回默认的loader
    *
    * @return The default classloader
    */
@@ -53,7 +52,7 @@ public class Resources {
   }
 
   /**
-   * Sets the default classloader
+   * 设置默认的loader
    *
    * @param defaultClassLoader - the new default ClassLoader
    */
@@ -62,7 +61,7 @@ public class Resources {
   }
 
   /**
-   * Returns the URL of the resource on the classpath
+   * 从classpath下获取资源URL
    *
    * @param resource The resource to find
    * @return The resource
@@ -74,7 +73,7 @@ public class Resources {
   }
 
   /**
-   * Returns the URL of the resource on the classpath
+   * 从classpath下获取资源URL
    *
    * @param loader   The classloader used to fetch the resource
    * @param resource The resource to find
@@ -83,6 +82,7 @@ public class Resources {
    */
   public static URL getResourceURL(ClassLoader loader, String resource) throws IOException {
     URL url = classLoaderWrapper.getResourceAsURL(resource, loader);
+    //如果为空则抛出异常
     if (url == null) {
       throw new IOException("Could not find resource " + resource);
     }
@@ -90,7 +90,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a Stream object
+   * 加载资源文件并返回一个Stream
    *
    * @param resource The resource to find
    * @return The resource
@@ -101,7 +101,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a Stream object
+   * 加载资源文件并返回一个Stream
    *
    * @param loader   The classloader used to fetch the resource
    * @param resource The resource to find
@@ -110,6 +110,7 @@ public class Resources {
    */
   public static InputStream getResourceAsStream(ClassLoader loader, String resource) throws IOException {
     InputStream in = classLoaderWrapper.getResourceAsStream(resource, loader);
+    //如果为空则抛出异常
     if (in == null) {
       throw new IOException("Could not find resource " + resource);
     }
@@ -117,7 +118,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a Properties object
+   * 加载classpath资源返回一个properties对象
    *
    * @param resource The resource to find
    * @return The resource
@@ -132,7 +133,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a Properties object
+   * 加载classpath资源返回一个properties对象,通过制定类加载器
    *
    * @param loader   The classloader used to fetch the resource
    * @param resource The resource to find
@@ -148,7 +149,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a Reader object
+   * 加载classpath资源返回一个Read对象
    *
    * @param resource The resource to find
    * @return The resource
@@ -165,7 +166,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a Reader object
+   * 加载classpath资源返回一个Read对象
    *
    * @param loader   The classloader used to fetch the resource
    * @param resource The resource to find
@@ -183,7 +184,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a File object
+   * 加载classpath资源返回一个文件对象
    *
    * @param resource The resource to find
    * @return The resource
@@ -194,7 +195,7 @@ public class Resources {
   }
 
   /**
-   * Returns a resource on the classpath as a File object
+   * 加载classpath资源返回一个文件对象
    *
    * @param loader   - the classloader used to fetch the resource
    * @param resource - the resource to find
@@ -206,7 +207,7 @@ public class Resources {
   }
 
   /**
-   * Gets a URL as an input stream
+   * 从URL网址中获取一个流对象
    *
    * @param urlString - the URL to get
    * @return An input stream with the data from the URL
@@ -219,7 +220,7 @@ public class Resources {
   }
 
   /**
-   * Gets a URL as a Reader
+   * 从URL网址中获取一个reader对象，可以指定字符编码
    *
    * @param urlString - the URL to get
    * @return A Reader with the data from the URL
@@ -236,7 +237,7 @@ public class Resources {
   }
 
   /**
-   * Gets a URL as a Properties object
+   * 从URL网址中获取一个Properties对象，可以指定字符编码
    *
    * @param urlString - the URL to get
    * @return A Properties object with the data from the URL
@@ -251,7 +252,7 @@ public class Resources {
   }
 
   /**
-   * Loads a class
+   * 加载一个类
    *
    * @param className - the class to fetch
    * @return The loaded class

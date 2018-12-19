@@ -48,6 +48,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
 /**
+ * xml 构建器
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */

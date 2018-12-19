@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * jdbc中的类型与mybatis中的映射枚举类
  * @author Clinton Begin
  */
 public enum JdbcType {
